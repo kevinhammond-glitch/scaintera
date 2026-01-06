@@ -108,7 +108,7 @@ fun Home(
 )
 {// Add a unique "route" for each navigation item
     val navItems = listOf(
-        BottomNavItem("Home", Icons.Default.Home, "home"),
+        BottomNavItem("Home Ok", Icons.Default.Home, "home"),
         BottomNavItem("Consulta...", Icons.AutoMirrored.Filled.List, "consultations"),
         BottomNavItem("Examens", Icons.Default.MonitorHeart, "examinations"),
         BottomNavItem("Hospita...", Icons.Default.Hotel, "hospitalisations")
