@@ -1,6 +1,6 @@
 
 [versions]
-agp = "9.3.2"
+agp = "9.3.3"
 coilCompose = "2.7.0"
 converterGson = "3.0.0"
 converterGsonVersion = "2.9.0"
