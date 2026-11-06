@@ -9,13 +9,13 @@ plugins {
 android {
     namespace = "com.example.scainterclients"
     compileSdk {
-        version = release(36)
+        version = release(35)
     }
 
     defaultConfig {
         applicationId = "com.example.scainterclients"
-        minSdk = 35
-        targetSdk = 36
+        minSdk = 24
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -64,6 +64,9 @@ dependencies {
 
     // Navigation
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.compose.runtime)
+    implementation(libs.androidx.foundation)
 
     // Test implementations
     testImplementation(libs.junit)
@@ -96,5 +99,8 @@ dependencies {
 
     // This is the correct dependency for collectAsStateWithLifecycle
     implementation(libs.androidx.lifecycle.runtime.compose)
+
+    // Image Implementation
+    implementation(libs.coil.compose)
 }
 

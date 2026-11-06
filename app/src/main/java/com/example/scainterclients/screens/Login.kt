@@ -1,47 +1,31 @@
 package com.example.scainterclients.screens
 
+
+import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Switch
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -53,21 +37,22 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.scainterclients.R
-import com.example.scainterclients.viewmodels.LoginViewModel
+import com.example.scainterclients.data.UserPreferences
 import com.example.scainterclients.viewmodels.LoginUiState
-import android.widget.Toast
+import com.example.scainterclients.viewmodels.LoginViewModel
 
 @Composable
-fun Login(navController: NavHostController, modifier: Modifier = Modifier,
-          loginViewModel: LoginViewModel = viewModel() ) {
+fun Login(
+    navController: NavHostController, modifier: Modifier = Modifier,
+    loginViewModel: LoginViewModel = viewModel()
+) {
     // our image resource file.
-    val painter = painterResource(id = R.drawable.mobileapplogo)
+    val painter = painterResource(id = R.drawable.newmobilelogoapp)
     // Our logo text
     val sca = "SCA"
     val intera = "INTER A"
-    // Our welcome text
-    val message = "Welcome to mySCA Inter"
-    val from = "Client"
+    // App name
+    val message = "MySCA Clients"
     // Remember the text entered in the TextField
     var username by remember { mutableStateOf("") }
     // Create a mutable state for the password text
@@ -77,19 +62,42 @@ fun Login(navController: NavHostController, modifier: Modifier = Modifier,
     // Remember the switch button state and forgot password
     val mContext = LocalContext.current
     val mCheckedState = remember { mutableStateOf(false) }
-    val scope = rememberCoroutineScope()
+
+    // Instantiate UserPreferences
+    val userPreferences = remember { UserPreferences(mContext) }
 
     // Collect the login state from the ViewModel
     val loginState by loginViewModel.loginState.collectAsState()
+
+    // This effect runs once when the composable is first launched
+    LaunchedEffect(Unit) {
+        val savedUsername = userPreferences.getUsername()
+        val savedPassword = userPreferences.getPassword()
+        if (savedUsername != null && savedPassword != null) {
+            username = savedUsername
+            password = savedPassword
+            mCheckedState.value = true
+        }
+    }
+
 
     // This effect runs when the loginState changes
     LaunchedEffect(loginState) {
         when (val state = loginState) {
             is LoginUiState.Success -> {
 
-                //Toast.makeText(mContext, "Login Successful! FamilleID: $familleID and Fullname: $fullname", Toast.LENGTH_SHORT).show()
+                // Save or clear username based on the switch state
+                if (mCheckedState.value) {
+                    userPreferences.saveUsername(username)
+                    userPreferences.savePassword(password)
+                } else {
+                    userPreferences.clearUsername()
+                    userPreferences.clearPassword()
+                }
 
-                // Navigation to the Home screen with the familleID as an argument
+                userPreferences.saveAssureId(state.assureID)
+
+                // Navigation to the Home screen
                 navController.navigate("home") {
                     popUpTo("login") { inclusive = true }
                 }
@@ -105,100 +113,89 @@ fun Login(navController: NavHostController, modifier: Modifier = Modifier,
         }
     }
     Column(
-        modifier = modifier.fillMaxSize(), // Added fillMaxSize to better center content
+        modifier = modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally // Center children horizontally
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth(), // Make the Row take the full width
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically // Pushes texts to the start and end
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            // below is the composable for image.
             Image(
                 painter = painter,
                 contentDescription = "SCA Inter A logo",
                 modifier = Modifier
-                    .width(100.dp)
-                    .height(100.dp)
-                    .padding(end = 16.dp),
+                    .width(60.dp)
+                    .height(60.dp)
+                    .padding(end = 10.dp),
                 contentScale = androidx.compose.ui.layout.ContentScale.Fit
             )
             Text(
                 text = sca,
                 modifier = Modifier.padding(end = 8.dp),
-                fontSize = 30.sp,
+                fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color(0xFF053f55)
             )
             Text(
                 text = intera,
-                fontSize = 30.sp,
+                fontSize = 14.sp,
                 fontWeight = FontWeight.Bold
             )
         }
-        Spacer(modifier = Modifier.height(26.dp))
-        // Text are now outside the Image
+        Spacer(modifier = Modifier.height(70.dp))
         Text(
             text = message,
-            fontSize = 58.sp,
+            fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
-            lineHeight = 72.sp,
+            fontFamily = FontFamily.SansSerif,
+            lineHeight = 50.sp,
             textAlign = TextAlign.Center,
             color = Color(0xFF053f55)
         )
-        // Wrap the Text and Spacer in a Row to position them horizontally
-        Row(
-            modifier = Modifier
-                .fillMaxWidth() // Make the Row take the full width
-                .padding(end = 20.dp), // Apply padding to the end of the Row
-            horizontalArrangement = Arrangement.End, // Align children to the end (right)
-            verticalAlignment = Alignment.CenterVertically // Vertically center the items in the Row
-        ) {
-            Text(
-                text = from,
-                fontSize = 36.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color(0xFF053f55)
-            )
-        }
         Column(
             modifier = Modifier
-                .width(400.dp) // Let the content determine the height
+                .width(400.dp)
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp), // Adds space between items
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // TextField for user input (Username)
             TextField(
                 value = username,
                 onValueChange = { username = it },
-                placeholder = { Text("Enter your username") },
-                label = { Text("Username") },
-                modifier = Modifier.fillMaxWidth(),
+                placeholder = { Text("Identifiant", fontSize = 10.sp, color = Color(0xFF053f55)) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .defaultMinSize(minHeight = 60.dp),
                 singleLine = true,
                 leadingIcon = {
                     Icon(Icons.Filled.AccountCircle, contentDescription = null, tint = Color(0xFF053f55))
                 },
                 colors = TextFieldDefaults.colors(
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White,
                     focusedLabelColor = Color(0xFF053f55),
-                    unfocusedLabelColor = Color(0xFF053f55)
+                    unfocusedLabelColor = Color(0xFF053f55),
+                    focusedIndicatorColor = Color(0xFF053f55),
+                    unfocusedIndicatorColor = Color(0xFF053f55)
                 ),
                 textStyle = TextStyle(
                     color = Color.Black,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold
+                    fontSize = 12.sp
                 )
             )
-            // TextField for giving password input
             TextField(
                 value = password,
                 onValueChange = { password = it },
-                modifier = Modifier.fillMaxWidth(),
-                label = { Text("Password") },
+                placeholder = { Text("Mot de passe", fontSize = 10.sp, color = Color(0xFF053f55)) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .defaultMinSize(minHeight = 60.dp),
                 singleLine = true,
-                placeholder = { Text("Password") },
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 trailingIcon = {
@@ -212,51 +209,63 @@ fun Login(navController: NavHostController, modifier: Modifier = Modifier,
                     Icon(Icons.Filled.Lock, contentDescription = null, tint = Color(0xFF053f55))
                 },
                 colors = TextFieldDefaults.colors(
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White,
                     focusedLabelColor = Color(0xFF053f55),
-                    unfocusedLabelColor = Color(0xFF053f55)
+                    unfocusedLabelColor = Color(0xFF053f55),
+                    focusedIndicatorColor = Color(0xFF053f55),
+                    unfocusedIndicatorColor = Color(0xFF053f55)
                 ),
                 textStyle = TextStyle(
                     color = Color.Black,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold
+                    fontSize = 12.sp
                 )
             )
+
         }
         Row(
             modifier = Modifier
-                .padding(20.dp)
+                .padding(start = 20.dp, end = 20.dp)
                 .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
             // "Remember me" switch and label
             Row(
-                verticalAlignment = Alignment.CenterVertically,
-                //modifier = Modifier.clickable { // Make the entire label area clickable to toggle the switch
-                //    mCheckedState.value = !mCheckedState.value
-                //}
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Switch(
                     checked = mCheckedState.value,
-                    onCheckedChange = { mCheckedState.value = it }
+                    onCheckedChange = { mCheckedState.value = it },
+                    colors = SwitchDefaults.colors(
+                        checkedThumbColor = Color.White,
+                        checkedTrackColor = Color(0xFF053f55)
+                    )
                 )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text("Remember me")
+                Spacer(modifier = Modifier.width(6.dp))
+                Text("Se souvenir de moi", fontSize = 10.sp)
             }
-            // "Forgot password?" text link
-            Text(
-                text = "Forgot password?",
-                color = Color(0xFF053f55),
-                textDecoration = TextDecoration.Underline,
-                //modifier = Modifier.clickable { navController.navigate("forgot") } // Correct way to handle clicks
-            )
-
         }
+        Spacer(modifier = Modifier.height(80.dp))
+        Text(
+                text = "Mot de passe oublié?",
+        color = Color(0xFF053f55),
+        fontSize = 10.sp,
+        textDecoration = TextDecoration.Underline,
+        modifier = Modifier
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onTap = {
+                        navController.navigate("forgot")
+                    }
+                )
+            }
+        )
         Button(
             modifier = Modifier
-                .height(100.dp)
+                .height(80.dp)
                 .width(400.dp)
-                .padding(16.dp),
+                .padding(12.dp),
             onClick = {
                 // Call the ViewModel function on button click
                 loginViewModel.loginUser(username, password)
@@ -278,8 +287,7 @@ fun Login(navController: NavHostController, modifier: Modifier = Modifier,
             } else {
                 Text(
                     stringResource(R.string.roll),
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
+                    fontSize = 14.sp
                 )
             }
         }

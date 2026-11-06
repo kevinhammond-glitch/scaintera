@@ -1,26 +1,93 @@
 <component name="ProjectDictionaryState">
   <dictionary name="project">
     <words>
+      <w>accès</w>
+      <w>acte</w>
       <w>adamou</w>
+      <w>ajouter</w>
+      <w>appuyer</w>
       <w>assurefetchapi</w>
       <w>assurepostapi</w>
       <w>attente</w>
+      <w>aucun</w>
+      <w>aucune</w>
+      <w>autres</w>
+      <w>avec</w>
       <w>bareme</w>
       <w>bienvenue</w>
       <w>centredesantetout</w>
+      <w>cette</w>
+      <w>cexamentdetailsgetapi</w>
+      <w>consultationpostapi</w>
+      <w>consultdetailsgetapi</w>
+      <w>consultgetapi</w>
       <w>consultpostapi</w>
+      <w>contacter</w>
+      <w>contactez</w>
       <w>couverture</w>
+      <w>d'examen</w>
+      <w>d'examens</w>
+      <w>demande</w>
+      <w>demandes</w>
+      <w>demandexamens</w>
+      <w>demandés</w>
+      <w>dentaire</w>
+      <w>donc</w>
+      <w>duree</w>
+      <w>durée</w>
+      <w>déconnecter</w>
+      <w>défini</w>
+      <w>effectuer</w>
+      <w>effectué</w>
+      <w>effectuée</w>
+      <w>etablissement</w>
+      <w>etat</w>
+      <w>examen</w>
+      <w>examendetailsgetapi</w>
       <w>examens</w>
+      <w>examgetapi</w>
       <w>frais</w>
       <w>fraisexternes</w>
+      <w>fraishospit</w>
       <w>fullname</w>
+      <w>genrepresta</w>
+      <w>groupe</w>
       <w>hospit</w>
       <w>hospita</w>
+      <w>hospitdetailsgetapi</w>
+      <w>hospitgetapi</w>
+      <w>hospits</w>
+      <w>identifiant</w>
+      <w>informatique</w>
       <w>intera</w>
+      <w>interne</w>
+      <w>invalide</w>
       <w>konan</w>
+      <w>matricule</w>
+      <w>medecin</w>
       <w>mobileapp</w>
+      <w>montant</w>
+      <w>médecin</w>
       <w>médecins</w>
+      <w>médicale</w>
+      <w>notez</w>
       <w>nouaman</w>
+      <w>numéros</w>
+      <w>optique</w>
+      <w>oublié</w>
+      <w>permet</w>
+      <w>pharmacie</w>
+      <w>posologie</w>
+      <w>prescripteur</w>
+      <w>prestadate</w>
+      <w>prestaname</w>
+      <w>prestataire</w>
+      <w>prestation</w>
+      <w>prestationdate</w>
+      <w>produit</w>
+      <w>profil</w>
+      <w>propos</w>
+      <w>quantite</w>
       <w>quelbareme</w>
       <w>quelcouverture</w>
       <w>quelfraisexternes</w>
@@ -28,11 +95,45 @@
       <w>quelreseaux</w>
       <w>quelsouscripteur</w>
       <w>quelstatut</w>
+      <w>ratingconsultpostapi</w>
+      <w>ratingexamspostapi</w>
+      <w>ratinghospitpostapi</w>
       <w>rejeté</w>
+      <w>remb</w>
+      <w>rembdetailsgetapi</w>
+      <w>remboursement</w>
+      <w>remboursementapi</w>
+      <w>remboursementdemande</w>
+      <w>remboursements</w>
+      <w>rembourser</w>
+      <w>remboursé</w>
+      <w>rembpostapi</w>
+      <w>remplir</w>
       <w>reseaux</w>
+      <w>retour</w>
+      <w>réclamer</w>
+      <w>réseau</w>
+      <w>saisie</w>
+      <w>sendremboursement</w>
+      <w>sendremboursementapi</w>
       <w>soins</w>
+      <w>soumettre</w>
+      <w>soumis</w>
       <w>souscripteur</w>
+      <w>sousname</w>
       <w>statut</w>
+      <w>succès</w>
+      <w>suivants</w>
+      <w>tous</w>
+      <w>traitant</w>
+      <w>trouvée</w>
+      <w>typecontrat</w>
+      <w>typehospit</w>
+      <w>typeremboursement</w>
+      <w>userating</w>
+      <w>usercomment</w>
+      <w>utilisateurs</w>
+      <w>veuillez</w>
     </words>
   </dictionary>
 </component>

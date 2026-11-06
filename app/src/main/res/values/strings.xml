@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">SCA Inter Clients</string>
-    <string name="roll">Login</string>
+    <string name="app_name">MySCA Clients</string>
+    <string name="roll">Se connecter</string>
 </resources>

@@ -18,7 +18,15 @@ sealed interface LoginUiState {
     object Idle : LoginUiState
     object Loading : LoginUiState
     data class Success(
-        val familleID: Int) : LoginUiState
+        val familleID: Int,
+        val assureID: Int,
+        val fullname: String,
+        val statut: String,
+        val reseaux: String,
+        val affiliation: String,
+        val souscripteur: String,
+        val fraisexternes: String,
+        val hospitalisation: String) : LoginUiState
 
     data class Error(val message: String) : LoginUiState
 }
@@ -27,7 +35,9 @@ class LoginViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel
 
     private val _loginState = MutableStateFlow<LoginUiState>(LoginUiState.Idle)
     val loginState: StateFlow<LoginUiState> = _loginState.asStateFlow()
-
+    fun logout() {
+        _loginState.value = LoginUiState.Idle
+    }
     fun loginUser(username: String, password: String) {
         viewModelScope.launch {
             _loginState.value = LoginUiState.Loading
@@ -43,7 +53,19 @@ class LoginViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel
                     if (loginResponse != null) {
                         Log.d("API_SUCCESS",
                             "Famille ID: ${loginResponse.familleID}")
-                        _loginState.value = LoginUiState.Success(loginResponse.familleID)
+                        // **FIXED:** Pass all required properties from loginResponse to the Success state
+                        _loginState.value = LoginUiState.Success(
+                            familleID = loginResponse.familleID,
+                            assureID = loginResponse.assureID,
+                            fullname = loginResponse.fullname,
+                            statut = loginResponse.statut,
+                            reseaux = loginResponse.reseaux,
+                            affiliation = loginResponse.affiliation,
+                            souscripteur = loginResponse.souscripteur,
+                            fraisexternes = loginResponse.fraisexternes,
+                            hospitalisation = loginResponse.hospitalisation
+                        )
+
                     } else {
                         Log.e("API_ERROR", "Response body is null even on success")
                         _loginState.value = LoginUiState.Error("Received an empty successful response.")
